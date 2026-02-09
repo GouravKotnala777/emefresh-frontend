@@ -7,7 +7,8 @@ interface APIHandlerTypes<BodyTypes>{
     body?:BodyTypes;
 };
 
-async function apiHandler<BodyTypes>({url, method, headers={"content-type":"application/json"}, credentials, body}:APIHandlerTypes<BodyTypes>):Promise<{success:boolean; message:string; jsonData:Record<string, any>|null}> {
+
+async function apiHandler<BodyTypes, ResType>({url, method, headers={"content-type":"application/json"}, credentials, body}:APIHandlerTypes<BodyTypes>):Promise<{success:boolean; message:string; jsonData:ResType|null;}> {
     try {
         const isFormData = body instanceof FormData;
         const res = await fetch(url, {
@@ -29,12 +30,11 @@ async function apiHandler<BodyTypes>({url, method, headers={"content-type":"appl
                         JSON.stringify(body)
         }); 
 
-        const data = await res.json() as {success:boolean; message:string; jsonData:Record<string, any>|null};
+        const data = await res.json() as {success:boolean; message:string; jsonData:ResType};
         return data;        
     } catch (error) {
-        console.log(error);
         const message = (error instanceof Error) ? error.message : "something went wrong";
-        return {success:false, message, jsonData:{}};
+        return {success:false, message, jsonData:null};
     }
 };
 
@@ -54,6 +54,9 @@ export type RegisterBodyTypes = Pick<UserTypes, "name"|"email"|"password">;
 export type LoginBodyTypes = Pick<UserTypes, "email"|"password">;
 
 export async function register(registerFormData:RegisterBodyTypes) {
+    const {name, email, password} = registerFormData;
+    if (!name || !email || !password) throw new Error("all fields are required");
+
     const res = await apiHandler({
         url:"http://api/v1/user/register",
         method:"POST",
@@ -63,13 +66,24 @@ export async function register(registerFormData:RegisterBodyTypes) {
     return res;
 };
 
-
 export async function login(loginFormData:LoginBodyTypes) {
+    const {email, password} = loginFormData;
+    if (!email || !password) throw new Error("all fields are required");
+
     const res = await apiHandler({
         url:"http://api/v1/user/register",
         method:"POST",
         credentials:"include",
         body:loginFormData
+    });
+    return res;
+};
+
+export async function myProfile() {
+    const res = await apiHandler<null, UserTypes>({
+        url:"http://api/v1/user/my_profile",
+        method:"GET",
+        credentials:"include"
     });
     return res;
 };
