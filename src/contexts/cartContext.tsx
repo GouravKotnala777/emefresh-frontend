@@ -17,24 +17,24 @@ export function CartProvider({children}:{children:ReactNode;}){
     const [cart, setCart] = useState<CartItemType[]>(JSON.parse(localStorage.getItem("cart")||"[]") as CartItemType[]);
     const [totalCartItems, setTotalCartItems] = useState<number>(0);
 
+    
     function addToCart(product:CartItemType|null) {
         if (!product || !product._id) throw new Error("productID is undefined");
-        let cartData:CartItemType[] = [];
         setCart((prev) => {
+            let cartData:CartItemType[] = [];
             const existing = prev.find((p) => p._id === product._id);
-
+            
             if (existing) {
                 const updatedCart = prev.map((p) => (p._id === product._id) ? ({...p, quantity:p.quantity+product.quantity}) : (p));
                 cartData = updatedCart;
-                return updatedCart;
             }
             else{
                 const updatedCart = [...prev, product];
                 cartData = updatedCart;
-                return updatedCart;
             }
+            localStorage.setItem("cart", JSON.stringify(cartData));
+            return cartData;
         });
-        localStorage.setItem("cart", JSON.stringify(cartData));
     };
     
 
