@@ -1,6 +1,6 @@
 type HTTPMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 interface APIHandlerTypes<BodyTypes>{
-    url:string;
+    endPoint:string;
     method:HTTPMethod;
     headers?:HeadersInit;
     credentials?:RequestCredentials;
@@ -8,10 +8,10 @@ interface APIHandlerTypes<BodyTypes>{
 };
 
 
-async function apiHandler<BodyTypes, ResType>({url, method, headers={"content-type":"application/json"}, credentials, body}:APIHandlerTypes<BodyTypes>):Promise<{success:boolean; message:string; jsonData:ResType|null;}> {
+export async function apiHandler<BodyTypes, ResType>({endPoint, method, headers={"content-type":"application/json"}, credentials, body}:APIHandlerTypes<BodyTypes>):Promise<{success:boolean; message:string; jsonData:ResType|null;}> {
     try {
         const isFormData = body instanceof FormData;
-        const res = await fetch(url, {
+        const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1${endPoint}`, {
             method,
             headers:(isFormData)?
                 headers
@@ -58,7 +58,7 @@ export async function register(registerFormData:RegisterBodyTypes) {
     if (!name || !email || !password) throw new Error("all fields are required");
 
     const res = await apiHandler({
-        url:"http://api/v1/user/register",
+        endPoint:"/user/register",
         method:"POST",
         credentials:"include",
         body:registerFormData
@@ -71,7 +71,7 @@ export async function login(loginFormData:LoginBodyTypes) {
     if (!email || !password) throw new Error("all fields are required");
 
     const res = await apiHandler({
-        url:"http://api/v1/user/register",
+        endPoint:"/user/register",
         method:"POST",
         credentials:"include",
         body:loginFormData
@@ -79,9 +79,16 @@ export async function login(loginFormData:LoginBodyTypes) {
     return res;
 };
 
+// apiHandler<bodyTypes, ResTypes> i know resTypes is unknown but why bodyTypes is LoginBodyTypes if we have not assigned type here
+//function apiHandler<LoginBodyTypes, unknown>({ url, method, headers, credentials, body }: APIHandlerTypes<LoginBodyTypes>): Promise<{
+//    success: boolean;
+//    message: string;
+//    jsonData: unknown;
+//}>
+
 export async function myProfile() {
     const res = await apiHandler<null, UserTypes>({
-        url:"http://api/v1/user/my_profile",
+        endPoint:"/user/my_profile",
         method:"GET",
         credentials:"include"
     });
