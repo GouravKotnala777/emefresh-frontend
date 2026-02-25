@@ -1,8 +1,8 @@
 import { createContext, useEffect, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 
 
-export type ProductType = {_id:string; name:string; price:number; imgUrl:string;};
-export type CartItemType = {_id:string; name:string; price:number; imgUrl:string; quantity:number;};
+export type ProductType = {_id:string; name:string; price:number; image:string;};
+export type CartItemType = {_id:string; name:string; price:number; image:string; quantity:number;};
 interface CartContextType{
     cart:CartItemType[];
     setCart:Dispatch<SetStateAction<CartItemType[]>>;

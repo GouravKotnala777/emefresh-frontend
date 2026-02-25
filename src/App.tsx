@@ -7,6 +7,7 @@ import Register from "./pages/Register.page.tsx";
 import Login from "./pages/Login.page.tsx";
 import { type UserTypes } from "./apis/userApi.ts";
 import CreateProduct from "./pages/CreateProduct.page.tsx";
+import SingleProduct from "./pages/SingleProduct.tsx";
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/single_fruit/:fruit_name/:productID" element={<SingleFruit />} />
+            <Route path="/single_product/:productID" element={<SingleProduct />} />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/create_product" element={<CreateProduct />} />
