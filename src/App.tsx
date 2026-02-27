@@ -8,6 +8,7 @@ import Login from "./pages/Login.page.tsx";
 import { type UserTypes } from "./apis/userApi.ts";
 import CreateProduct from "./pages/CreateProduct.page.tsx";
 import SingleProduct from "./pages/SingleProduct.tsx";
+import Cart from "./pages/Cart.page.tsx";
 
 
 function App() {
@@ -43,7 +44,7 @@ function App() {
 
     <BrowserRouter>
       <Header screenWidth={screenWidth} />
-      <main className="border bg-neutral-400 border-red-500 max-w-3xl mx-auto">
+      <main className="max-w-3xl mx-auto">
         <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/single_fruit/:fruit_name/:productID" element={<SingleFruit />} />
@@ -51,8 +52,8 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
             <Route path="/create_product" element={<CreateProduct />} />
+            <Route path="/cart" element={<Cart />} />
         </Routes>
-        <pre>{JSON.stringify(user)}</pre>
       </main>
     </BrowserRouter>
 
