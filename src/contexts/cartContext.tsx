@@ -43,20 +43,27 @@ export function CartProvider({children}:{children:ReactNode;}){
         
         if (!selectedProduct) throw Error("selectedProduct not found");
 
-        if (selectedProduct.quantity === 1) {
-            setCart((prev) => prev.filter((p) => (p._id !== product._id)))
+        let cartData:CartItemType[] = [];
+        if (product.quantity === selectedProduct.quantity) {
+            setCart((prev) => {
+                cartData = prev.filter((p) => (p._id !== product._id));
+                localStorage.setItem("cart", JSON.stringify(cartData));
+                return cartData;
+            })
         }
         else{
-            setCart((prev) => 
-                prev.map((p) => (p._id === product._id) ? ({...p, quantity:p.quantity-product.quantity}) : (p))
-            )
-        }    
+            setCart((prev) => {
+                cartData= prev.map((p) => (p._id === product._id) ? ({...p, quantity:p.quantity-product.quantity}) : (p));
+                localStorage.setItem("cart", JSON.stringify(cartData));
+                return cartData;
+            })
+        }
     };
 
     
     useEffect(() => {
-        if (cart.length !== 0) {
-            const totalItems = cart.reduce((acc, iter) => acc+=iter.quantity, 0);
+        if (cart.length >= 0) {
+            const totalItems = cart.reduce((acc, iter) => acc+iter.quantity, 0);            
             setTotalCartItems(totalItems);
         }
     }, [cart]);
