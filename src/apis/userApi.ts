@@ -8,7 +8,7 @@ interface APIHandlerTypes<BodyTypes>{
 };
 
 
-export async function apiHandler<BodyTypes, ResType>({endPoint, method, headers={"content-type":"application/json"}, credentials, body}:APIHandlerTypes<BodyTypes>):Promise<{success:boolean; message:string; jsonData:ResType|null;}> {
+export async function apiHandler<BodyTypes, ResType>({endPoint, method, headers, credentials, body}:APIHandlerTypes<BodyTypes>):Promise<{success:boolean; message:string; jsonData:ResType|null;}> {
     try {
         const isFormData = body instanceof FormData;
         const res = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/v1${endPoint}`, {
