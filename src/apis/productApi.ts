@@ -31,6 +31,7 @@ export interface ProductTypes {
     returnCount:number;
 };
 export type CreateProductBodyTypes = Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"tag">
+export type UpdateProductBodyTypes = Partial<Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"stock">>&{tag?:string; warning?:string;};
 
 
 
@@ -55,25 +56,26 @@ export async function getSingleProduct({productID}:{productID?:string;}) {
     
     return res;
 };
-export async function createProduct(registerFormData:CreateProductBodyTypes) {
-    //const {name, price, description, category, weight, volume, tag} = registerFormData;
-    //if (!name || !price || !description || !category) throw new Error("all fields are required");
+export async function createProduct(createProductFormData:CreateProductBodyTypes) {
+    const {name, price, description, category} = createProductFormData;
+    if (!name || !price || !description || !category) throw new Error("all fields are required");
 
     const res = await apiHandler({
         endPoint:"/product/create",
         method:"POST",
         credentials:"include",
-        body:registerFormData
+        body:createProductFormData
     });
     return res;
 };
-export async function updateProduct({productID}:{productID:string;}) {
+export async function updateProduct({productID, updateForm}:{productID:string; updateForm:UpdateProductBodyTypes}) {
     if (!productID) throw new Error("productID is undefined");
     
     const res = await apiHandler({
         endPoint:`/product/update/${productID}`,
         method:"PATCH",
-        credentials:"include"
+        credentials:"include",
+        body:updateForm
     });
     return res;
 };
