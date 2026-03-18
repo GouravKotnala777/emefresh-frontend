@@ -11,6 +11,7 @@ import SingleProduct from "./pages/SingleProduct.tsx";
 import Cart from "./pages/Cart.page.tsx";
 import AllProducts from "./pages/AllProducts.page.tsx";
 import UpdateProduct from "./pages/UpdateProduct.page.tsx";
+import Checkout from "./pages/Checkout.page.tsx";
 
 
 function ScrollToTop() {
@@ -69,6 +70,7 @@ function App() {
             <Route path="/create_product" element={<CreateProduct />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/update_product" element={<UpdateProduct />} />
+            <Route path="/checkout" element={<Checkout />} />
         </Routes>
       </main>
     </BrowserRouter>
