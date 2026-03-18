@@ -8,17 +8,14 @@ function Login() {
     function onChangeHandler(e:ChangeEvent<HTMLInputElement>) {
         setFormData({...formData, [e.target.name]:e.target.value});
     }
-    async function registerHandler(e:MouseEvent<HTMLButtonElement>) {
+    async function loginHandler(e:MouseEvent<HTMLButtonElement>) {        
         try {
             e.preventDefault();
             const res = await login(formData);
-            console.log("////////////////// 1");
             console.log(res);
-            console.log("////////////////// 2");
         } catch (error) {
             throw error;
         }
-
     }
     
     return(
@@ -28,7 +25,7 @@ function Login() {
                 <form className="flex flex-col gap-3 mt-3 text-sm">
                     <input type="text" name="email" placeholder="Email" className="p-2" onChange={onChangeHandler} />
                     <input type="text" name="password" placeholder="Password" className="p-2" onChange={onChangeHandler} />
-                    <button className="bg-sky-500 py-2 font-semibold text-white rounded-md [box-shadow:0px_0px_4px_0.2px_gray] hover:opacity-80 transition-all ease-in-out duration-300" onClick={registerHandler}>Login</button>
+                    <button className="bg-sky-500 py-2 font-semibold text-white rounded-md [box-shadow:0px_0px_4px_0.2px_gray] hover:opacity-80 transition-all ease-in-out duration-300" onClick={loginHandler}>Login</button>
                 </form>
             </div>
         </section>
