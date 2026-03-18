@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Slider from "../components/reusable_components/Slider.component";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import type { ProductType } from "../contexts/cartContext";
 import { allProducts, type ProductTypes } from "../apis/productApi";
 import useCart from "../hooks/useCart";
@@ -25,6 +25,7 @@ const categories = ["p1.png","p1.png","p1.png","p1.png","p1.png","p1.png","p1.pn
 function Home() {
     const [products, setProducts] = useState<ProductTypes[]>([]);
     const {addToCart} = useCart();
+    const navigate = useNavigate();
 
     async function getAllProductsHandler() {
         const productsRes = await allProducts();
@@ -80,6 +81,9 @@ function Home() {
                             ))
                         }
                     </div>
+                    <div className="text-center bg-linear-0 from-gray-200 via-transparent via-40% to-transparent">
+                        <button className="border border-yellow-400 text-sm px-3 py-1 rounded-md my-5" onClick={() => navigate("/all_products")}>See More</button>
+                    </div>
                 </div>
             </div>
 
@@ -89,10 +93,12 @@ function Home() {
                         <div className="flex justify-between flex-wrap">
                                 {
                                     fruits.map(({_id, name, image}) => (
-                                        <NavLink to={`/single_fruit/${name}/${_id}`} className="h-25 w-20 p-2 m-2 rounded-lg bg-white [box-shadow:0px_0px_4px_0.2px_var(--color-neutral-700)]">
+                                        <button className="h-25 w-20 p-2 m-2 rounded-lg bg-white [box-shadow:0px_0px_4px_0.2px_var(--color-neutral-700)]"
+                                            onClick={() => navigate(`/single_fruit/${name}/${_id}`)}
+                                        >
                                             <img src={image} alt={image} className="w-full h-[80%]" />
                                             <p className="text-xs text-center">{name}</p>
-                                        </NavLink>
+                                        </button>
                                     ))
                                 }
                         </div>
