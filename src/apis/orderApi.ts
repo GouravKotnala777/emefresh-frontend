@@ -11,6 +11,7 @@ export type OrderStatusType = "pending"|"delivered"|"cancelled"|"returned";
 export type PaymentStatusType = "pending"|"success"|"failed"|"refunded";
 export type ModeOfPaymentType = "cod"|"card";
 export interface OrderTypes{
+    _id:string;
     userID:string;
     products:{
         productID:string;
@@ -29,7 +30,7 @@ export type CreateOrderFormTypes = Pick<OrderTypes, "products"|"totalAmount"|"mo
 export type UpdateOrderFormTypes = Partial<Pick<OrderTypes, "orderStatus"|"paymentStatus">>&{orderID:string;};
 
 
-export async function myOrders() {
+export async function getMyOrders() {
     const res = await apiHandler<null, OrderTypes[]>({
         endPoint:`/order/`,
         method:"GET",

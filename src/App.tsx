@@ -5,13 +5,13 @@ import { useEffect, useState } from "react";
 import SingleFruit from "./pages/SingleFruit.tsx";
 import Register from "./pages/Register.page.tsx";
 import Login from "./pages/Login.page.tsx";
-import { type UserTypes } from "./apis/userApi.ts";
 import CreateProduct from "./pages/CreateProduct.page.tsx";
 import SingleProduct from "./pages/SingleProduct.tsx";
 import Cart from "./pages/Cart.page.tsx";
 import AllProducts from "./pages/AllProducts.page.tsx";
 import UpdateProduct from "./pages/UpdateProduct.page.tsx";
 import Checkout from "./pages/Checkout.page.tsx";
+import MyOrders from "./pages/MyOrders.page.tsx";
 
 
 function ScrollToTop() {
@@ -26,7 +26,7 @@ function ScrollToTop() {
 
 function App() {
   const [screenWidth, setScreenWidth] = useState(0);
-  const [user] = useState<UserTypes|null>(null);
+  //const [user] = useState<UserTypes|null>(null);
 
   function resizeHandler() {
     const screenWidthValue = window.innerWidth;
@@ -71,6 +71,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/update_product" element={<UpdateProduct />} />
             <Route path="/checkout" element={<Checkout />} />
+            <Route path="/my_orders" element={<MyOrders />} />
         </Routes>
       </main>
     </BrowserRouter>
