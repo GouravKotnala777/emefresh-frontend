@@ -107,8 +107,8 @@ function Home() {
 
             <div className="mt-15">
                 <div className="max-w-3xl relative">
-                        <h2 className="border border-green-500 text-center text-lg font-semibold text-neutral-800">Categories</h2>
-                        <div className="border border-red-500 flex justify-between flex-wrap">
+                        <h2 className="text-center text-lg font-semibold text-neutral-800">Categories</h2>
+                        <div className="flex justify-between flex-wrap">
                                 {
                                     categories.map((c) => (
                                         <div className="h-25 w-20 p-2 m-2 rounded-lg bg-white [box-shadow:0px_0px_4px_0.2px_var(--color-neutral-700)]">

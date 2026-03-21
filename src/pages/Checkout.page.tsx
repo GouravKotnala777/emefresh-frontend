@@ -52,7 +52,7 @@ function Checkout() {
             <div className="mt-15">
 
                 {/* Address Form Or Location Ratio Inputs */}
-                <form className="max-w-full w-sm bg-white p-3 border-b border-gray-200">
+                <form className="max-w-full w-sm bg-white p-3 border-b border-gray-200 mx-auto">
                     <legend className="text-neutral-700 font-bold text-lg text-center py-2">Fill Adrress or Use Location</legend>
                     <fieldset className="flex justify-around items-center text-sm text-gray-600">
                         <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ function Checkout() {
                 {
                     addressTab === "addressForm" ?
                         //Address Form
-                        <div className="max-w-full w-sm bg-white p-3 border-b border-gray-200">
+                        <div className="max-w-full w-sm bg-white p-3 border-b border-gray-200 mx-auto">
                             <h1 className="text-neutral-700 font-bold text-lg text-center py-2">Address Form</h1>
                             <form className="flex flex-col gap-3 mt-3 text-sm">
                                 <input type="text" name="area1" placeholder="Area-1" className="p-2" onChange={onAddressFormChangeHandler} />
@@ -83,7 +83,7 @@ function Checkout() {
                         </div>
                         :
                         // Get Location Access Button
-                        <div className="flex flex-col gap-3 mt-3 text-sm p-3">
+                        <div className="flex flex-col gap-3 mt-3 text-sm p-3 mx-auto">
                             <button className="border border-sky-500 py-2 font-semibold text-sky-500 bg-sky-50 rounded-md [box-shadow:0px_0px_4px_0.2px_var(sky-500)] hover:opacity-80 transition-all ease-in-out duration-300"
                                 onClick={getLocationAccess}
                             >Get Location Access</button>
@@ -94,7 +94,7 @@ function Checkout() {
                 
 
                 {/* Mode of Payment Radio Inputs */}
-                <form className="max-w-full w-sm bg-white p-3 border-b border-gray-200">
+                <form className="max-w-full w-sm bg-white p-3 border-b border-gray-200 mx-auto">
                     <legend className="text-neutral-700 font-bold text-lg text-center py-2">Select Mode Of Payment</legend>
                     <fieldset className="flex justify-around items-center text-sm text-gray-600">
                         <div className="flex items-center gap-2">
@@ -112,7 +112,7 @@ function Checkout() {
                 {
                     modeOfPayment === "card" ?
                         //Card Form
-                        <div className="max-w-full w-sm bg-white p-3 border-b border-gray-200">
+                        <div className="max-w-full w-sm bg-white p-3 border-b border-gray-200 mx-auto">
                             <h1 className="text-neutral-700 font-bold text-lg text-center py-2">Checkout Form</h1>
                             <form className="flex flex-col gap-3 mt-3 text-sm">
                                 <input type="text" name="name" placeholder="Card Number" className="p-2" />
@@ -122,7 +122,7 @@ function Checkout() {
                         </div>
                         :
                         // Cash On Delivery Place Order Button
-                        <div className="flex flex-col gap-3 mt-3 text-sm p-3">
+                        <div className="flex flex-col gap-3 mt-3 text-sm p-3 mx-auto">
                             <button className="border border-sky-500 py-2 font-semibold text-sky-500 bg-sky-50 rounded-md [box-shadow:0px_0px_4px_0.2px_var(sky-500)] hover:opacity-80 transition-all ease-in-out duration-300"
                                 onClick={createOrderHandler}
                             >Place Order</button>
