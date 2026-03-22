@@ -1,8 +1,10 @@
 import { useState, type ChangeEvent, type MouseEvent } from "react";
 import { login } from "../apis/userApi";
+import useUser from "../hooks/useUser";
 
 
 function Login() {
+    const {setUser} = useUser();
     const [formData, setFormData] = useState<{email:string; password:string;}>({email:"", password:""});
 
     function onChangeHandler(e:ChangeEvent<HTMLInputElement>) {
@@ -12,6 +14,11 @@ function Login() {
         try {
             e.preventDefault();
             const res = await login(formData);
+
+            if (res.success) {
+                setUser(res.jsonData);
+                window.location.href = "/";
+            }
             console.log(res);
         } catch (error) {
             throw error;

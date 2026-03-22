@@ -12,6 +12,8 @@ import AllProducts from "./pages/AllProducts.page.tsx";
 import UpdateProduct from "./pages/UpdateProduct.page.tsx";
 import Checkout from "./pages/Checkout.page.tsx";
 import MyOrders from "./pages/MyOrders.page.tsx";
+import { myProfile } from "./apis/userApi.ts";
+import useUser from "./hooks/useUser.tsx";
 
 
 function ScrollToTop() {
@@ -26,6 +28,7 @@ function ScrollToTop() {
 
 function App() {
   const [screenWidth, setScreenWidth] = useState(0);
+  const {setUser} = useUser();
   //const [user] = useState<UserTypes|null>(null);
 
   function resizeHandler() {
@@ -33,15 +36,16 @@ function App() {
     setScreenWidth(screenWidthValue);
   };
 
-  //async function myProfileHandler() {
-  //  const res = await myProfile();
-  //  if (res.success) {
-  //    setUser(res.jsonData);
-  //  }
-  //}
+  async function myProfileHandler() {
+    const res = await myProfile();
+    if (res.success) {
+      setUser(res.jsonData);
+    }
+  }
   
 
   useEffect(() => {
+    myProfileHandler();
   }, []);
 
   useEffect(() => {
