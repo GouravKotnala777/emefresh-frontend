@@ -1,12 +1,12 @@
 import { NavLink } from "react-router-dom";
-import useTheme from "../hooks/useTheme";
 import { useEffect, useState } from "react";
 import useCart from "../hooks/useCart";
+import useUser from "../hooks/useUser";
 
 
 function Header({screenWidth}:{screenWidth:number}) {
     const {totalCartItems} = useCart();
-    const {setTheme} = useTheme();
+    const {user} = useUser();
     const [isHeaderRaised, setIsHeaderRaised] = useState<boolean>(false);
     const [isSettingOpen, setIsSettingOpen] = useState<boolean>(false);
     const [activeNavlink, setActiveNavlink] = useState<string>("portfolio");
@@ -42,6 +42,7 @@ function Header({screenWidth}:{screenWidth:number}) {
         
     return(//[box-shadow:0px_0px_1px_0.1px_var(--color-neutral-500)_inset]
         <header className="fixed top-0 left-0 w-full pt-2 z-20">
+            {/* Setting Dialog */}
             <dialog open={isSettingOpen} className="fixed top-0 left-0 w-screen h-screen z-10 backdrop-blur-[2px] bg-transparent"
                 onClick={closeSettingHandler}
             >
@@ -226,38 +227,6 @@ function Header({screenWidth}:{screenWidth:number}) {
                                 
                             </div>
 
-
-                            <div className="text-neutral-700 dark:text-neutral-300 text-sm flex flex-col gap-1">
-                                <div className="text-xs text-neutral-600 dark:text-neutral-400 mt-4 font-medium">Theme</div>
-                                <button className="flex items-center gap-2 hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50 py-2 px-3 rounded-lg"
-                                    onClick={() => {
-                                        setTheme("dark");
-                                        closeSettingHandler();
-                                    }}
-                                >
-                                    <span className=""><svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 3v1"></path><path d="M12 20v1"></path><path d="M3 12h1"></path><path d="M20 12h1"></path><path d="m18.364 5.636-.707.707"></path><path d="m6.343 17.657-.707.707"></path><path d="m5.636 5.636.707.707"></path><path d="m17.657 17.657.707.707"></path></svg></span>
-                                    <span>Light</span>
-                                </button>
-                                <button className="flex items-center gap-2 hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50 py-2 px-3 rounded-lg"
-                                    onClick={() => {
-                                        setTheme("light");
-                                        closeSettingHandler();
-                                    }}
-                                >
-                                    <span className=""><svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M18 5h4"></path><path d="M20 3v4"></path><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"></path></svg></span>
-                                    <span>Dark</span>
-                                </button>
-                                <button className="flex items-center gap-2 hover:bg-neutral-200/50 dark:hover:bg-neutral-700/50 py-2 px-3 rounded-lg"
-                                    onClick={() => {}}
-                                >
-                                    <span className=""><svg xmlns="http://www.w3.org/2000/svg" className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path><path d="M12 3l0 18"></path><path d="M12 9l4.65 -4.65"></path><path d="M12 14.3l7.37 -7.37"></path><path d="M12 19.6l8.85 -8.85"></path></svg></span>
-                                    <span>Auto</span>
-                                </button>
-                            </div>
-
-
-
-
                             <div className="sticky bg-linear-0 from-neutral-50 dark:from-neutral-800 from-15% to-transparent to-100% bottom-0 -left-10 h-10"></div>
                         </div>
 
@@ -328,6 +297,14 @@ function Header({screenWidth}:{screenWidth:number}) {
                                         <span className="bg-neutral-100 dark:bg-neutral-800 opacity-80 text-neutral-500 dark:text-neutral-300 [box-shadow:-2px_-2px_1px_0.1px_#00000010_inset] dark:[box-shadow:-2px_-2px_1px_0.1px_#ffffff10_inset] font-roboto rounded-sm p-1 [font-size:var(--text-xs)]">Ctrl</span>
                                         <span className="bg-neutral-100 dark:bg-neutral-800 opacity-80 text-neutral-500 dark:text-neutral-300 [box-shadow:-2px_-2px_1px_0.1px_#00000010_inset] dark:[box-shadow:-2px_-2px_1px_0.1px_#ffffff10_inset] font-roboto rounded-sm p-1 [font-size:var(--text-xs)]">K</span>
                                     </button>
+                            }
+
+
+                            {
+                                user?.name ?
+                                    <div className="text-sm font-semibold">Hi {user?.name||"user"}</div>
+                                    :
+                                    <NavLink to="login" className="text-sm font-semibold">Login</NavLink>
                             }
 
                             <NavLink
