@@ -70,7 +70,7 @@ export async function login(loginFormData:LoginBodyTypes) {
     const {email, password} = loginFormData;
     if (!email || !password) throw new Error("all fields are required");
 
-    const res = await apiHandler({
+    const res = await apiHandler<LoginBodyTypes, UserTypes>({
         endPoint:"/user/login",
         method:"POST",
         credentials:"include",
