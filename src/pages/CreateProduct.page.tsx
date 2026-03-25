@@ -3,7 +3,7 @@ import { createProduct, type CreateProductBodyTypes } from "../apis/productApi";
 
 
 function CreateProduct() {
-    const [createProductFormData, setCreateProductFormData] = useState<CreateProductBodyTypes>({name:"", price:0, description:"", category:"null", weight:"", volume:"", tag:[]});
+    const [createProductFormData, setCreateProductFormData] = useState<CreateProductBodyTypes>({name:"", price:0, description:"", category:"null", weight:"", volume:"", tag:""});
 
     function onChangeHandler(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) {
         //const fieldName = e.target.name as keyof CreateProductBodyTypes;
@@ -46,7 +46,8 @@ function CreateProduct() {
                     <input type="text" name="weight" placeholder="Weight (in gm)" className="p-2 text-neutral-800" onChange={onChangeHandler} />
                     <input type="text" name="volume" placeholder="Volume (in ml)" className="p-2 text-neutral-800" onChange={onChangeHandler} />
                     <input type="text" name="tag" placeholder="Add Tags saperated by comma ( , )" className="p-2 text-neutral-800" onChange={onChangeHandler} />
-                    <button className="bg-sky-500 py-2 font-semibold text-white rounded-md [box-shadow:0px_0px_4px_0.2px_gray] hover:opacity-80 transition-all ease-in-out duration-300" onClick={createProductHandler}>Login</button>
+                    <input type="text" name="warning" placeholder="Add Warnings saperated by comma ( , )" className="p-2 text-neutral-800" onChange={onChangeHandler} />
+                    <button className="bg-sky-500 py-2 font-semibold text-white rounded-md [box-shadow:0px_0px_4px_0.2px_gray] hover:opacity-80 transition-all ease-in-out duration-300" onClick={createProductHandler}>Add New Product</button>
                 </form>
             </div>
         </section>
