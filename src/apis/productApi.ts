@@ -30,7 +30,7 @@ export interface ProductTypes {
     soldCount:number;
     returnCount:number;
 };
-export type CreateProductBodyTypes = Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"tag">
+export type CreateProductBodyTypes = Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume">&{tag:string; warning?:string;};
 export type UpdateProductBodyTypes = Partial<Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"stock">>&{tag?:string; warning?:string;};
 
 
@@ -38,6 +38,14 @@ export type UpdateProductBodyTypes = Partial<Pick<ProductTypes, "name"|"price"|"
 export async function allProducts() {
     const res = await apiHandler<null, ProductTypes[]>({
         endPoint:"/product/all",
+        method:"GET",
+        credentials:"include"
+    });
+    return res;
+};
+export async function getProductsWithTag({tagName}:{tagName:string}) {
+    const res = await apiHandler<{tagName:string}, ProductTypes[]>({
+        endPoint:`/product/tag/${tagName}`,
         method:"GET",
         credentials:"include"
     });
