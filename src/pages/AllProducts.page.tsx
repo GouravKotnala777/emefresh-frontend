@@ -23,7 +23,7 @@ function AllProducts() {
         <section className="text-md text-neutral-800">
             <div className="mt-15">
                 <div className="max-w-3xl relative">
-                    <div className="flex flex-wrap justify-center gap-5">
+                    <div className="flex flex-wrap justify-center gap-5 min-h-500">
                         {
                             products.map(({_id, name, price, description, image}) => (
                                 <NavLink to={`/single_product/${_id}`} className="bg-white w-50 flex flex-col justify-between gap-2 p-2 rounded-xl">
