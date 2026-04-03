@@ -26,12 +26,18 @@ function Home() {
     const [products, setProducts] = useState<ProductTypes[]>([]);
     const {addToCart} = useCart();
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
+
+    //useGetPathScrolledValue();
+    //useSetPathScrolledValue(isLoading);
 
     async function getAllProductsHandler() {
         const productsRes = await allProducts();
 
         if (productsRes.success && productsRes.jsonData) {
             setProducts(productsRes.jsonData);
+            setIsLoading(false);
         }
     }
 
@@ -47,8 +53,8 @@ function Home() {
                 <div className="flex max-w-3xl relative">
                     <Slider btns={{size:'30'}}>
                         {
-                            banners.map((b) => (
-                                <img className="w-full h-full" src={b} alt={b} />
+                            banners.map((b, index) => (
+                                <img key={index} className="w-full h-full" src={b} alt={b} />
                             ))
                         }
                     </Slider>
@@ -56,13 +62,13 @@ function Home() {
             </div>
 
 
-            
+            {/* Products List*/}
             <div className="mt-15">
                 <div className="max-w-3xl relative">
-                    <div className="flex flex-wrap justify-center gap-5">
+                    <div className="flex flex-wrap justify-center gap-5 min-h-500">
                         {
                             products.map(({_id, name, price, description, image}) => (
-                                <NavLink to={`/single_product/${_id}`} className="bg-white w-50 flex flex-col justify-between gap-2 p-2 rounded-xl">
+                                <NavLink key={_id} to={`/single_product/${_id}`} className="bg-white w-50 flex flex-col justify-between gap-2 p-2 rounded-xl">
                                     <div data-productID={_id} className="">
                                         <img src={`${import.meta.env.VITE_SERVER_URL}/api/v1${image}`} alt={`${import.meta.env.VITE_SERVER_URL}/api/v1${image}`} className="w-full" />
                                     </div>
@@ -73,7 +79,7 @@ function Home() {
                                     </div>
                                     <div className="text-sm text-white flex justify-between" onClick={(e) => {e.stopPropagation(); e.preventDefault();}}>
                                         <button className="px-2 py-2 rounded-md bg-yellow-500 active:opacity-80"
-                                            onClick={() => addToCart({_id, name, price, quantity:1, image:image?.[0]||""})}
+                                            onClick={() => addToCart({_id, name, price, quantity:1, image:image||""})}
                                         >Add To Cart</button>
                                         <button className="px-2 py-2 rounded-md bg-green-500 active:opacity-80">Buy</button>
                                     </div>
@@ -87,21 +93,22 @@ function Home() {
                 </div>
             </div>
 
+            {/* Fruits List */}
             <div className="mt-15">
                 <div className="max-w-3xl relative">
-                        <h2 className="text-center text-lg font-semibold text-neutral-800">Fruits</h2>
-                        <div className="flex justify-between flex-wrap">
-                                {
-                                    fruits.map(({_id, name, image}) => (
-                                        <button className="h-25 w-20 p-2 m-2 rounded-lg bg-white [box-shadow:0px_0px_4px_0.2px_var(--color-neutral-700)]"
-                                            onClick={() => navigate(`/single_fruit/${name}/${_id}`)}
-                                        >
-                                            <img src={image} alt={image} className="w-full h-[80%]" />
-                                            <p className="text-xs text-center">{name}</p>
-                                        </button>
-                                    ))
-                                }
-                        </div>
+                    <h2 className="text-center text-lg font-semibold text-neutral-800">Fruits</h2>
+                    <div className="flex justify-between flex-wrap">
+                        {
+                            fruits.map(({_id, name, image}) => (
+                                <button key={_id} className="h-25 w-20 p-2 m-2 rounded-lg bg-white [box-shadow:0px_0px_4px_0.2px_var(--color-neutral-700)]"
+                                    onClick={() => navigate(`/single_fruit/${name}/${_id}`)}
+                                >
+                                    <img src={image} alt={image} className="w-full h-[80%]" />
+                                    <p className="text-xs text-center">{name}</p>
+                                </button>
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
 
@@ -110,8 +117,8 @@ function Home() {
                         <h2 className="text-center text-lg font-semibold text-neutral-800">Categories</h2>
                         <div className="flex justify-between flex-wrap">
                                 {
-                                    categories.map((c) => (
-                                        <div className="h-25 w-20 p-2 m-2 rounded-lg bg-white [box-shadow:0px_0px_4px_0.2px_var(--color-neutral-700)]">
+                                    categories.map((c, index) => (
+                                        <div key={index} className="h-25 w-20 p-2 m-2 rounded-lg bg-white [box-shadow:0px_0px_4px_0.2px_var(--color-neutral-700)]">
                                             <img src={c} alt={c} className="w-full h-[80%]" />
                                             <p className="text-xs text-center">gourav</p>
                                         </div>
