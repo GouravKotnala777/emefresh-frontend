@@ -26,18 +26,12 @@ function Home() {
     const [products, setProducts] = useState<ProductTypes[]>([]);
     const {addToCart} = useCart();
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
-
-
-    //useGetPathScrolledValue();
-    //useSetPathScrolledValue(isLoading);
 
     async function getAllProductsHandler() {
         const productsRes = await allProducts();
 
         if (productsRes.success && productsRes.jsonData) {
             setProducts(productsRes.jsonData);
-            setIsLoading(false);
         }
     }
 
