@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import type { CartItemType } from "../contexts/cartContext";
 import useCart from "../hooks/useCart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Spinner from "../components/reusable_components/Spinner.component";
+import ImageWithFallback from "../components/reusable_components/ImageWithFallback.component";
 let qtyUpdatingTimer = 0;
 function Cart() {
     const {cart, addToCart, removeFromCart, totalCartValue} = useCart();
     const [qtyUpdatingProduct, setQtyUpdatingProduct] = useState<string|null>(null);
     const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     function changeQunatityHandler(product:CartItemType, process:"add"|"remove") {
         clearTimeout(qtyUpdatingTimer);
@@ -25,6 +27,24 @@ function Cart() {
             }, 700);
         }
     }
+
+    useEffect(() => {
+        if (cart.length === 0) {
+            return;
+        }
+
+        setIsLoading(false);
+    }, []);
+
+    if (cart.length === 0) {
+        return(
+            <section className="text-md text-neutral-800">
+                <div className="mt-15 w-full">
+                    <img src="empty_cart.jpg" alt="empty_cart.jpg"/>
+                </div>
+            </section>
+        )
+    }
     
     return(
         <section className="text-md text-neutral-800">
@@ -38,7 +58,7 @@ function Cart() {
                         <div className="text-sm bg-white border border-green-500/80 text-green-500/80 px-2 py-1 rounded-md">₹{totalCartValue}</div>
                     </button>
                 </div>
-                <div className="max-w-3xl relative">
+                <div className="max-w-3xl relative min-h-500">
                     {
                         cart.map(({_id, name, price, image, quantity}, index) => (
                             <div key={index} className="border-b border-neutral-200 px-2 py-5">
@@ -46,8 +66,8 @@ function Cart() {
                                     <button className="size-6 flex justify-center items-center ml-auto bg-red-300 text-white rounded-md text-xs font-semibold" onClick={() => {removeFromCart({_id, name, image, price, quantity})}}>X</button>
                                 </div>
                                 <div className="flex justify-between items-center">
-                                    <div className="w-17 h-14">
-                                        <img src={`${import.meta.env.VITE_SERVER_URL}/api/v1${image}`} alt={`${import.meta.env.VITE_SERVER_URL}/api/v1${image}`} className="w-full h-full" />
+                                    <div className=" h-14">
+                                        <ImageWithFallback image={image} />
                                     </div>
                                     <div className="text-xs">
                                         <div className="text-neutral-800">{name}</div>
