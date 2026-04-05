@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { getSingleProduct, type ProductTypes } from "../apis/productApi";
 import { useNavigate, useParams } from "react-router-dom";
 import useCart from "../hooks/useCart";
+import Spinner from "../components/reusable_components/Spinner.component";
 
 const tabContent = {
     description:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit, est. description...",
     productInfo:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit, est. productInfo..."
 };
-const userRole:"user"|"admin" = "user";
+const userRole:"user"|"admin" = "admin";
 
 function SingleProduct() {
     const {addToCart} = useCart();
@@ -15,6 +16,7 @@ function SingleProduct() {
     const navigate = useNavigate();
     const [singleProduct, setSingleProduct] = useState<ProductTypes>({_id:"", name:"", price:0, category:"null", image:"", weight:"", volume:"", rating:0, avgRating:0, numReviews:0, soldCount:0, returnCount:0, tag:[]});
     const [selectedTab, setSelectedTab] = useState<"description"|"productInfo">("description");
+    const [processingProduct, setProcessingProduct] = useState<string|null>(null);
 
 
     async function getSingleProductHandler() {
@@ -25,6 +27,12 @@ function SingleProduct() {
         else{
             throw Error("SingleProduct > getSingleProductHandler > getSingleProduct")
         }
+    };
+
+    async function addToCartHandler({_id, name, price, image}:Pick<ProductTypes, "_id"|"name"|"price"|"image">) {
+        setProcessingProduct(_id);
+        await addToCart({_id, name, price, quantity:1, image:image||""});
+        setProcessingProduct(null);
     };
 
     useEffect(() => {
@@ -58,9 +66,9 @@ function SingleProduct() {
 
                             <div className="text-sm text-white flex justify-between" onClick={(e) => {e.stopPropagation(); e.preventDefault();}}>
                                 {/* Add To Cart Button */}
-                                <button className="px-2 py-2 rounded-md bg-yellow-500 active:opacity-80"
-                                    onClick={() => addToCart({_id:singleProduct._id, name:singleProduct.name, price:singleProduct.price, quantity:1, image:singleProduct?.image||""})}
-                                >Add To Cart</button>
+                                <button className="min-w-23 px-2 py-2 rounded-md bg-yellow-500"
+                                    onClick={() => addToCartHandler({_id:singleProduct._id, name:singleProduct.name, price:singleProduct.price, image:singleProduct?.image||""})}
+                                >{processingProduct === singleProduct._id?<Spinner width="20px" thickness="2px" color="white" />:"Add To Cart"}</button>
 
 
                                 {/* Buy Button & Update Product Page Button*/}

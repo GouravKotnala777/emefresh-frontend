@@ -4,36 +4,29 @@ import useCart from "../hooks/useCart";
 import { useEffect, useState } from "react";
 import Spinner from "../components/reusable_components/Spinner.component";
 import ImageWithFallback from "../components/reusable_components/ImageWithFallback.component";
-let qtyUpdatingTimer = 0;
+
+
 function Cart() {
     const {cart, addToCart, removeFromCart, totalCartValue} = useCart();
     const [qtyUpdatingProduct, setQtyUpdatingProduct] = useState<string|null>(null);
     const navigate = useNavigate();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    function changeQunatityHandler(product:CartItemType, process:"add"|"remove") {
-        clearTimeout(qtyUpdatingTimer);
+    async function changeQunatityHandler(product:CartItemType, process:"add"|"remove") {
         setQtyUpdatingProduct(product._id);
         if (process === "add") {
-            qtyUpdatingTimer = setTimeout(() => {
-                addToCart(product);
-                setQtyUpdatingProduct(null);                
-            }, 700);
+            await addToCart(product);            
+            setQtyUpdatingProduct(null);
         }
         else if (process === "remove") {
-            qtyUpdatingTimer = setTimeout(() => {
-                removeFromCart(product);
-                setQtyUpdatingProduct(null);
-            }, 700);
+            await removeFromCart(product);
+            setQtyUpdatingProduct(null);
         }
-    }
+    };
 
     useEffect(() => {
         if (cart.length === 0) {
             return;
         }
-
-        setIsLoading(false);
     }, []);
 
     if (cart.length === 0) {

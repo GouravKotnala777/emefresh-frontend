@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import type { ProductType } from "../contexts/cartContext";
 import { allProducts, type ProductTypes } from "../apis/productApi";
 import useCart from "../hooks/useCart";
+import Spinner from "../components/reusable_components/Spinner.component";
 
 //const banners = ["banner2.jpg","banner3.jpg","banner4.jpg","banner6.jpg","banner7.jpg","banner8.jpg","banner2.jpg"]
 const banners = ["b1.jpeg","b2.jpeg","b3.jpeg","b4.jpeg","b5.jpeg","b6.jpeg","b7.jpeg"];
@@ -26,6 +27,7 @@ function Home() {
     const [products, setProducts] = useState<ProductTypes[]>([]);
     const {addToCart} = useCart();
     const navigate = useNavigate();
+    const [processingProduct, setProcessingProduct] = useState<string|null>(null);
 
     async function getAllProductsHandler() {
         const productsRes = await allProducts();
@@ -33,8 +35,13 @@ function Home() {
         if (productsRes.success && productsRes.jsonData) {
             setProducts(productsRes.jsonData);
         }
-    }
+    };
 
+    async function addToCartHandler({_id, name, price, image}:Pick<ProductTypes, "_id"|"name"|"price"|"image">) {
+        setProcessingProduct(_id);
+        await addToCart({_id, name, price, quantity:1, image:image||""});
+        setProcessingProduct(null);
+    };
 
     useEffect(() => {
         getAllProductsHandler();
@@ -72,9 +79,9 @@ function Home() {
                                         <div className="text-sm text-neutral-600 text-left py-1">{description}</div>
                                     </div>
                                     <div className="text-sm text-white flex justify-between" onClick={(e) => {e.stopPropagation(); e.preventDefault();}}>
-                                        <button className="px-2 py-2 rounded-md bg-yellow-500 active:opacity-80"
-                                            onClick={() => addToCart({_id, name, price, quantity:1, image:image||""})}
-                                        >Add To Cart</button>
+                                        <button className="min-w-23 px-2 py-2 rounded-md bg-yellow-500"
+                                            onClick={() => addToCartHandler({_id, name, price, image})}
+                                        >{processingProduct === _id?<Spinner width="20px" thickness="2px" color="white" />:"Add To Cart"}</button>
                                         <button className="px-2 py-2 rounded-md bg-green-500 active:opacity-80">Buy</button>
                                     </div>
                                 </NavLink>

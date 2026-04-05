@@ -18,10 +18,31 @@ import useUser from "./hooks/useUser.tsx";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+  const [scrollY, setScrollY] = useState<number>(0);
+  const [scrolledPaths, setScrolledPaths] = useState<Record<string,number>>({});
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    if (!scrolledPaths[pathname]) {
+      setScrolledPaths({...scrolledPaths, [pathname]:0});
+      window.scrollTo(0,0);
+    }
+    else{
+      window.scrollTo(0,(scrolledPaths[pathname]));
+    }
   }, [pathname]);
+
+  function scrollYHandler() {
+    const sy = window.scrollY;
+    setScrollY(sy);
+  };
+  useEffect(() => {
+    document.addEventListener("scroll", scrollYHandler);
+    return () => document.removeEventListener("scroll", scrollYHandler);
+  }, []);
+
+  useEffect(() => {
+    setScrolledPaths({...scrolledPaths, [pathname]:scrollY});
+  }, [scrollY]);
 
   return null;
 };
@@ -29,7 +50,6 @@ function ScrollToTop() {
 function App() {
   const [screenWidth, setScreenWidth] = useState(0);
   const {setUser} = useUser();
-  //const [user] = useState<UserTypes|null>(null);
 
   function resizeHandler() {
     const screenWidthValue = window.innerWidth;
@@ -41,8 +61,7 @@ function App() {
     if (res.success) {
       setUser(res.jsonData);
     }
-  }
-  
+  };  
 
   useEffect(() => {
     myProfileHandler();
