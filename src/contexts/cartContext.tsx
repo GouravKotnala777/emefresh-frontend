@@ -1,4 +1,5 @@
 import { createContext, useEffect, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
+import { debounce } from "../utils/functions.util";
 
 
 export type ProductType = {_id:string; name:string; price:number; image:string;};
@@ -8,8 +9,8 @@ interface CartContextType{
     setCart:Dispatch<SetStateAction<CartItemType[]>>;
     totalCartItems:number;
     totalCartValue:number;
-    addToCart:(product:CartItemType|null)=>void;
-    removeFromCart:(product:CartItemType)=>void;
+    addToCart:(product:CartItemType|null) => Promise<unknown>;
+    removeFromCart:(product: CartItemType) => Promise<unknown>;
 };
 
 export const CartContext = createContext<CartContextType|null>(null);
@@ -20,47 +21,70 @@ export function CartProvider({children}:{children:ReactNode;}){
     const [totalCartValue, setTotalCartValue] = useState<number>(0);
 
     
-    function addToCart(product:CartItemType|null) {
+    function addToCartOriginal(product:CartItemType|null):Promise<CartItemType[]> {        
         if (!product || !product._id) throw new Error("productID is undefined");
-        setCart((prev) => {
-            let cartData:CartItemType[] = [];
-            const existing = prev.find((p) => p._id === product._id);
-            
-            if (existing) {
-                const updatedCart = prev.map((p) => (p._id === product._id) ? ({...p, quantity:p.quantity+product.quantity}) : (p));
-                cartData = updatedCart;
-            }
-            else{
-                const updatedCart = [...prev, product];
-                cartData = updatedCart;
-            }
-            localStorage.setItem("cart", JSON.stringify(cartData));
-            return cartData;
-        });
-    };
-    
+        let cartData:CartItemType[] = [];
 
-    function removeFromCart(product:CartItemType) {
+        const cartDataPromise = new Promise<CartItemType[]>((resolve, reject) => {
+            try {
+                setCart((prev) => {
+                    const existing = prev.find((p) => p._id === product._id);
+                    
+                    if (existing) {
+                        const updatedCart = prev.map((p) => (p._id === product._id) ? ({...p, quantity:p.quantity+product.quantity}) : (p));
+                        cartData = updatedCart;
+                    }
+                    else{
+                        const updatedCart = [...prev, product];
+                        cartData = updatedCart;
+                    }
+                    localStorage.setItem("cart", JSON.stringify(cartData));
+                    resolve(cartData);
+                    return (cartData);
+                });
+            } catch (error) {
+                reject(error);
+            }
+        });
+
+        return cartDataPromise;
+    };
+
+    function removeFromCartOriginal(product:CartItemType) {
         const selectedProduct = cart.find((p) => p._id === product._id);
         
         if (!selectedProduct) throw Error("selectedProduct not found");
 
         let cartData:CartItemType[] = [];
-        if (product.quantity === selectedProduct.quantity) {
-            setCart((prev) => {
-                cartData = prev.filter((p) => (p._id !== product._id));
-                localStorage.setItem("cart", JSON.stringify(cartData));
-                return cartData;
-            })
-        }
-        else{
-            setCart((prev) => {
-                cartData= prev.map((p) => (p._id === product._id) ? ({...p, quantity:p.quantity-product.quantity}) : (p));
-                localStorage.setItem("cart", JSON.stringify(cartData));
-                return cartData;
-            })
-        }
+
+        const responsePromise = new Promise<CartItemType[]>((resolve, reject) => {
+            try {
+                if (product.quantity === selectedProduct.quantity) {
+                    setCart((prev) => {
+                        cartData = prev.filter((p) => (p._id !== product._id));
+                        localStorage.setItem("cart", JSON.stringify(cartData));
+                        resolve(cartData);
+                        return cartData;
+                    })
+                }
+                else{
+                    setCart((prev) => {
+                        cartData= prev.map((p) => (p._id === product._id) ? ({...p, quantity:p.quantity-product.quantity}) : (p));
+                        localStorage.setItem("cart", JSON.stringify(cartData));
+                        resolve(cartData);
+                        return cartData;
+                    })
+                }
+            } catch (error) {
+                reject(error);
+            }
+        });
+
+        return responsePromise;
     };
+
+    const addToCart = debounce<(...args:any[])=>Promise<CartItemType[]>, CartItemType[]>(addToCartOriginal);
+    const removeFromCart = debounce(removeFromCartOriginal);
 
     
     useEffect(() => {
