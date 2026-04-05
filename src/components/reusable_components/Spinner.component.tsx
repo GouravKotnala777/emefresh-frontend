@@ -9,7 +9,7 @@ interface SpinnerPropTypes{
 function Spinner({width="30px", thickness="4px", color="blue"}:SpinnerPropTypes) {
     
     return(
-        <div className="animate-spin border-2 border-red-500 w-30 h-30 rounded-full border-b-transparent"
+        <div className="animate-spin border-2 border-red-500 w-30 h-30 rounded-full mx-auto border-b-transparent"
             style={{
                 width,
                 height:width,
