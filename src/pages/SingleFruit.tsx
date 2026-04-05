@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useCart from "../hooks/useCart";
 import { fruits } from "./Home.page";
-import type { CartItemType } from "../contexts/cartContext";
 import { getProductsWithTag, type ProductTypes } from "../apis/productApi";
+import Spinner from "../components/reusable_components/Spinner.component";
 
 
 const tabContent = {
@@ -11,12 +11,11 @@ const tabContent = {
     productInfo:"Lorem ipsum, dolor sit amet consectetur adipisicing elit. Suscipit, est. productInfo..."
 };
 function SingleFruit() {
-    const {cart, addToCart} = useCart();
+    const {addToCart} = useCart();
     const {productID, fruit_name} = useParams();
-    const [selectedFruit, setSelectedFruit] = useState<CartItemType|null>(null);
     const [productsWithSameFruit, setProductsWithSameFruit] = useState<ProductTypes[]>([]);
     const [selectedTab, setSelectedTab] = useState<"description"|"productInfo">("description");
-
+        const [processingProduct, setProcessingProduct] = useState<string|null>(null);
 
     async function getProductsWithTagHandler() {
         if (!fruit_name) throw Error("fruit_name is undefined");
@@ -28,10 +27,15 @@ function SingleFruit() {
         }
     };
 
+    async function addToCartHandler({_id, name, price, image}:Pick<ProductTypes, "_id"|"name"|"price"|"image">) {
+        setProcessingProduct(_id);
+        await addToCart({_id, name, price, quantity:1, image:image||""});
+        setProcessingProduct(null);
+    };
+
     useEffect(() => {
         const findResult = fruits.find((f) => f._id === productID);
         if (!findResult) throw new Error("findResult not found");
-        setSelectedFruit({...findResult, quantity:1});
         getProductsWithTagHandler();
     }, []);
 
@@ -62,18 +66,19 @@ function SingleFruit() {
 
                             
                             {
-                                productsWithSameFruit.map((product) => (
+                                productsWithSameFruit.map(({_id, name, price, image}) => (
                                     <div className="mx-auto mt-7 border-b border-neutral-100">
                                         <div className="w-35 mx-auto">
-                                            <img src={`${import.meta.env.VITE_SERVER_URL}/api/v1${product?.image}`} alt={`${import.meta.env.VITE_SERVER_URL}/api/v1/${product?.image}`} className="w-full text-[6px]" />
+                                            <img src={`${import.meta.env.VITE_SERVER_URL}/api/v1${image}`} alt={`${import.meta.env.VITE_SERVER_URL}/api/v1/${image}`} className="w-full text-[6px]" />
                                         </div>
                                         <p className="text-nowrap truncate py-1 text-sm text-center">Lorem ipsum dolor</p>
                                         <p className="text-xl font-semibold text-center">₹110/-</p>
                                         <div className="flex justify-between my-2">
-                                            <button className="py-2 px-3 text-sm rounded-sm bg-transparent border border-neutral-800"
-                                                onClick={() => addToCart(selectedFruit)}
-                                            >Add to Cart</button>
-                                            <button className="py-2 px-3 text-sm rounded-sm bg-green-500 text-white">Buy</button>
+                                            <button className="min-w-23 px-2 py-2 rounded-md bg-yellow-500 text-sm text-white"
+                                                onClick={() => addToCartHandler({_id:_id, name:name, price:price, image:image||""})}
+                                            >{processingProduct === _id?<Spinner width="20px" thickness="2px" color="white" />:"Add To Cart"}</button>
+
+                                            <button className="py-2 px-2 text-sm rounded-sm bg-green-500 text-white">Buy</button>
                                         </div>
                                     </div>
                                 ))
