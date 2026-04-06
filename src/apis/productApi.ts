@@ -1,5 +1,10 @@
 import { apiHandler } from "./userApi";
 
+export interface NutritionalFactsTypes{
+    principle:string[];
+    vitamins:string[];
+    minerals:string[];
+};
 
 export interface ProductTypes {
     _id:string;
@@ -14,14 +19,9 @@ export interface ProductTypes {
     weight?: string;
     volume?: string;
     ingredients?: string[];
-    nutritionFacts?: {
-        servingSize: string;
-        servingsPerContainer: number;
-        protein: number;
-        carbs: number;
-        fat: number;
-        calories: number;
-    };
+    nutritionFacts?: NutritionalFactsTypes;
+    servings:string;
+    experience:string;
     rating: number;
     avgRating:number;
     numReviews: number;
@@ -30,8 +30,8 @@ export interface ProductTypes {
     soldCount:number;
     returnCount:number;
 };
-export type CreateProductBodyTypes = Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume">&{tag:string; warning?:string;};
-export type UpdateProductBodyTypes = Partial<Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"stock">>&{tag?:string; warning?:string;};
+export type CreateProductBodyTypes = Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"servings"|"experience">&{tag:string; warning?:string; principle:string; vitamins:string; minerals:string;};
+export type UpdateProductBodyTypes = Partial<Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"stock"|"servings"|"experience">>&{tag?:string; warning?:string; principle:string; vitamins:string; minerals:string;};
 
 
 
