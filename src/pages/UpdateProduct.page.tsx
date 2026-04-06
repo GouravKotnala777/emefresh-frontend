@@ -182,6 +182,38 @@ function UpdateProduct() {
                         <input type="text" name="warning" placeholder={singleProduct?.warning?.join(",")+" (warnings)"} className="border border-gray-200 px-3 py-2 w-full"
                             onChange={onChangeHandler}
                         />
+                        <input type="text" name="servings" placeholder="Add servings in one pack" className="p-2 text-neutral-800" onChange={onChangeHandler} />
+                        <input type="text" name="experience" placeholder="Add taste , texture , smell , juicyness" className="p-2 text-neutral-800" onChange={onChangeHandler} />
+                        <div className="flex">
+                            <span className="w-4 text-center content-center bg-sky-300 rounded-l-sm relative group cursor-default">
+                                <span className="text-white group-hover:text-sky-500 transition-colors ease-in-out duration-300">*</span>
+                                <span className="text-sky-700 text-xs absolute bottom-full font-mono p-2 bg-sky-100 rounded-sm w-65 scale-0 opacity-0 blur-sm group-hover:blur-none group-hover:scale-100 group-hover:opacity-100 transition-all ease-in-out duration-300 delay-300">
+                                    saperate two units by (,) and amount per product and daily value by (#)
+                                    eg. calories#104kcal#5%,total fat#0.34g#0%,...
+                                </span>
+                            </span>
+                            <input type="text" name="principle" placeholder="Add principle nutrients" className="p-2 text-neutral-800 flex-1" onChange={onChangeHandler} />
+                        </div>
+                        <div className="flex">
+                            <span className="w-4 text-center content-center bg-sky-300 rounded-l-sm relative group cursor-default">
+                                <span className="text-white group-hover:text-sky-500 transition-colors ease-in-out duration-300">*</span>
+                                <span className="text-sky-700 text-xs absolute bottom-full font-mono p-2 bg-sky-100 rounded-sm w-65 scale-0 opacity-0 blur-sm group-hover:blur-none group-hover:scale-100 group-hover:opacity-100 transition-all ease-in-out duration-300 delay-300">
+                                    saperate two units by (,) and amount per product and daily value by (#)
+                                    eg. [vitamin A#108IU#2%,vitamin C#9.2mg#10%,...]
+                                </span>
+                            </span>
+                            <input type="text" name="vitamins" placeholder="Add vitamin nutrients" className="p-2 text-neutral-800 flex-1" onChange={onChangeHandler} />
+                        </div>
+                        <div className="flex">
+                            <span className="w-4 text-center content-center bg-sky-300 rounded-l-sm relative group cursor-default">
+                                <span className="text-white group-hover:text-sky-500 transition-colors ease-in-out duration-300">*</span>
+                                <span className="text-sky-700 text-xs absolute bottom-full font-mono p-2 bg-sky-100 rounded-sm w-65 scale-0 opacity-0 blur-sm group-hover:blur-none group-hover:scale-100 group-hover:opacity-100 transition-all ease-in-out duration-300 delay-300">
+                                    saperate two units by (,) and amount per product and daily value by (#)
+                                    eg. [potassium#214mg#5%, manganese#0.07mg#3%,...]
+                                </span>
+                            </span>
+                            <input type="text" name="minerals" placeholder="Add mineral nutrients" className="p-2 text-neutral-800 flex-1" onChange={onChangeHandler} />
+                        </div>
                         <button className="border border-blue-500 px-3 py-2 block w-full bg-blue-400 text-white font-semibold"
                             onClick={onClickHandler}
                         >Update</button>

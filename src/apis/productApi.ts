@@ -31,7 +31,7 @@ export interface ProductTypes {
     returnCount:number;
 };
 export type CreateProductBodyTypes = Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"servings"|"experience">&{tag:string; warning?:string; principle:string; vitamins:string; minerals:string;};
-export type UpdateProductBodyTypes = Partial<Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"stock"|"servings"|"experience">>&{tag?:string; warning?:string; principle:string; vitamins:string; minerals:string;};
+export type UpdateProductBodyTypes = Partial<Pick<ProductTypes, "name"|"price"|"description"|"category"|"weight"|"volume"|"stock"|"servings"|"experience">>&{tag?:string; warning?:string; principle?:string; vitamins?:string; minerals?:string;};
 
 
 
