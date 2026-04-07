@@ -95,22 +95,30 @@ function SingleProduct() {
                                     <button className={`border border-t-gray-200 border-x-gray-200 ${selectedTab === "description"?"border-b-white":"border-b-gray-200 bg-gray-100"} py-2 px-3`} onClick={() => setSelectedTab("description")}>Description</button>
                                     <button className={`border border-t-gray-200 border-x-gray-200 ${selectedTab === "productInfo"?"border-b-white":"border-b-gray-200 bg-gray-100"} py-2 px-3`} onClick={() => setSelectedTab("productInfo")}>Product Info</button>
                                 </div>
-                                <div className="border p-3 text-sm text-gray-600 tracking-wide">
+                                <div className="p-3 text-sm text-gray-600 tracking-wide">
                                     {
                                         selectedTab === "description" ?
                                         <span className="">{singleProduct.description}</span>
                                         :
-                                        <div className="border grid grid-cols-3">
-                                            {
-                                                singleProduct.nutritionFacts?.principle.map((iter) => iter.split("#").map((iter2) => <span className="text-xs">{iter2}</span>))
-                                            }
-                                            {
-                                                singleProduct.nutritionFacts?.vitamins.map((iter) => iter.split("#").map((iter2) => <span className="text-xs">{iter2}</span>))
-                                            }
-                                            {
-                                                singleProduct.nutritionFacts?.minerals.map((iter) => iter.split("#").map((iter2) => <span className="text-xs">{iter2}</span>))
-                                            }
-                                            
+                                        <div className="">
+                                            <div className="mt-4 mb-2 text-gray-600 font-semibold">Principle Nutrients</div>
+                                            <div className="grid grid-cols-3">
+                                                {
+                                                    singleProduct.nutritionFacts?.principle.map((iter) => iter.split("#").map((iter2) => <span className="text-xs">{iter2}</span>))
+                                                }
+                                            </div>
+                                            <div className="mt-4 mb-2 text-gray-600 font-semibold">Vitamins</div>
+                                            <div className="grid grid-cols-3">
+                                                {
+                                                    singleProduct.nutritionFacts?.vitamins.map((iter) => iter.split("#").map((iter2) => <span className="text-xs">{iter2}</span>))
+                                                }
+                                            </div>
+                                            <div className="mt-4 mb-2 text-gray-600 font-semibold">Minerals</div>
+                                            <div className="grid grid-cols-3">
+                                                {
+                                                    singleProduct.nutritionFacts?.minerals.map((iter) => iter.split("#").map((iter2) => <span className="text-xs">{iter2}</span>))
+                                                }
+                                            </div>
                                         </div>
                                     }
                                 </div>

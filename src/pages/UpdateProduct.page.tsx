@@ -20,6 +20,7 @@ function UpdateProduct() {
 
     async function onClickHandler() {
         const productID = singleProduct?._id;
+        
         if (!productID) throw Error("singleProduct is undefined");
         const updateProductRes = await updateProduct({productID, updateForm});
         console.log(updateProductRes);
@@ -108,7 +109,7 @@ function UpdateProduct() {
     return(
         <section className="text-md text-neutral-800">
             <div className="mt-15">
-                <div className="max-w-3xl relative">
+                <div className="max-w-sm relative mx-auto">
                     <h2 className="text-center text-lg font-semibold text-neutral-800">{singleProduct?.name?.toUpperCase()}</h2>
 
                     {/* Image and Update button */}
@@ -182,14 +183,17 @@ function UpdateProduct() {
                         <input type="text" name="warning" placeholder={singleProduct?.warning?.join(",")+" (warnings)"} className="border border-gray-200 px-3 py-2 w-full"
                             onChange={onChangeHandler}
                         />
-                        <input type="text" name="servings" placeholder="Add servings in one pack" className="p-2 text-neutral-800" onChange={onChangeHandler} />
-                        <input type="text" name="experience" placeholder="Add taste , texture , smell , juicyness" className="p-2 text-neutral-800" onChange={onChangeHandler} />
+                        <input type="text" name="servings" placeholder={singleProduct?.servings} className="border border-gray-200 px-3 py-2 w-full" onChange={onChangeHandler} />
+                        <input type="text" name="experience" placeholder={singleProduct?.experience} className="border border-gray-200 px-3 py-2 w-full" onChange={onChangeHandler} />
                         <div className="flex">
                             <span className="w-4 text-center content-center bg-sky-300 rounded-l-sm relative group cursor-default">
                                 <span className="text-white group-hover:text-sky-500 transition-colors ease-in-out duration-300">*</span>
-                                <span className="text-sky-700 text-xs absolute bottom-full font-mono p-2 bg-sky-100 rounded-sm w-65 scale-0 opacity-0 blur-sm group-hover:blur-none group-hover:scale-100 group-hover:opacity-100 transition-all ease-in-out duration-300 delay-300">
+                                <span className="text-sky-700 text-left text-xs absolute bottom-full font-mono p-2 bg-sky-100 rounded-sm w-65 scale-0 opacity-0 blur-sm group-hover:blur-none group-hover:scale-100 group-hover:opacity-100 transition-all ease-in-out duration-300 delay-300 wrap-break-word">
                                     saperate two units by (,) and amount per product and daily value by (#)
-                                    eg. calories#104kcal#5%,total fat#0.34g#0%,...
+                                    eg:- calories#104kcal#5%,total fat#0.34g#0%,...<br/><br/>
+                                    <span className="text-gray-500">current value:- {singleProduct?.nutritionFacts?.principle}
+                                    {/*calories#104kcal#5%,carbohydrates#27.6g#10%,protein#0.52g#1%,total fat#0.34g#0%*/}
+                                    </span>
                                 </span>
                             </span>
                             <input type="text" name="principle" placeholder="Add principle nutrients" className="p-2 text-neutral-800 flex-1" onChange={onChangeHandler} />
@@ -197,9 +201,11 @@ function UpdateProduct() {
                         <div className="flex">
                             <span className="w-4 text-center content-center bg-sky-300 rounded-l-sm relative group cursor-default">
                                 <span className="text-white group-hover:text-sky-500 transition-colors ease-in-out duration-300">*</span>
-                                <span className="text-sky-700 text-xs absolute bottom-full font-mono p-2 bg-sky-100 rounded-sm w-65 scale-0 opacity-0 blur-sm group-hover:blur-none group-hover:scale-100 group-hover:opacity-100 transition-all ease-in-out duration-300 delay-300">
+                                <span className="text-sky-700 text-left text-xs absolute bottom-full font-mono p-2 bg-sky-100 rounded-sm w-65 scale-0 opacity-0 blur-sm group-hover:blur-none group-hover:scale-100 group-hover:opacity-100 transition-all ease-in-out duration-300 delay-300 wrap-break-word">
                                     saperate two units by (,) and amount per product and daily value by (#)
-                                    eg. [vitamin A#108IU#2%,vitamin C#9.2mg#10%,...]
+                                    eg:- vitamin A#108IU#2%,vitamin C#9.2mg#10%,...<br/><br/>
+                                    <span className="text-gray-500">current value:- {singleProduct?.nutritionFacts?.vitamins}
+                                    </span>
                                 </span>
                             </span>
                             <input type="text" name="vitamins" placeholder="Add vitamin nutrients" className="p-2 text-neutral-800 flex-1" onChange={onChangeHandler} />
@@ -207,9 +213,11 @@ function UpdateProduct() {
                         <div className="flex">
                             <span className="w-4 text-center content-center bg-sky-300 rounded-l-sm relative group cursor-default">
                                 <span className="text-white group-hover:text-sky-500 transition-colors ease-in-out duration-300">*</span>
-                                <span className="text-sky-700 text-xs absolute bottom-full font-mono p-2 bg-sky-100 rounded-sm w-65 scale-0 opacity-0 blur-sm group-hover:blur-none group-hover:scale-100 group-hover:opacity-100 transition-all ease-in-out duration-300 delay-300">
+                                <span className="text-sky-700 text-left text-xs absolute bottom-full font-mono p-2 bg-sky-100 rounded-sm w-65 scale-0 opacity-0 blur-sm group-hover:blur-none group-hover:scale-100 group-hover:opacity-100 transition-all ease-in-out duration-300 delay-300 wrap-break-word">
                                     saperate two units by (,) and amount per product and daily value by (#)
-                                    eg. [potassium#214mg#5%, manganese#0.07mg#3%,...]
+                                    eg:- potassium#214mg#5%,manganese#0.07mg#3%,...<br/><br/>
+                                    <span className="text-gray-500">current value:- {singleProduct?.nutritionFacts?.minerals}
+                                    </span>
                                 </span>
                             </span>
                             <input type="text" name="minerals" placeholder="Add mineral nutrients" className="p-2 text-neutral-800 flex-1" onChange={onChangeHandler} />
